@@ -1,0 +1,1 @@
+{"request": {"message_type": "task_request", "payload": {"task_id": "648a17cf-d81d-4e4a-b1f4-90b4b48f9e8f", "task_type": "analyze", "input_data": {"message": "Now analyze the trends in machine learning"}}}}

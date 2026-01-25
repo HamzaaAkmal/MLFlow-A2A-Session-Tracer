@@ -1,0 +1,21 @@
+execution_duration_ms: 416
+request_preview: '{"task_id": "881320ba-cf51-4231-a8b0-9d2a2d00bb52", "task_type":
+  "search", "input_data": {"message": "Can you search for information about machine
+  learning frameworks?", "keywords": ["search"], "context": {"session_id": "a1426753-adca-4117-9aa2-f38a46c67bae",
+  "analysis": {"requires_delegation": true, "task_type": "search", "keywords": ["search"],
+  "message_summary": "Can you search for information about machine learning frameworks?"}}}}'
+request_time: '2026-01-25T09:03:07.916Z'
+response_preview: '{"status": "success", "task_id": "881320ba-cf51-4231-a8b0-9d2a2d00bb52",
+  "data": {"raw_result": {"results": [{"title": "Result 1 for ''Can you search for
+  information about machine learning frameworks?''", "score": 0.95}, {"title": "Result
+  2 for ''Can you search for information about machine learning frameworks?''", "score":
+  0.87}, {"title": "Result 3 for ''Can you search for information about machine learning
+  frameworks?''", "score": 0.76}], "total_results": 3, "query": "Can you search for
+  information about machine learning frameworks?"}, "processed_at": 1769331788.3322983,
+  "task_type": "search"}, "message": "Found 3 results for your search query."}'
+state: OK
+trace_id: tr-d12704fb1d4ed048c644f2f4b159d325
+trace_location:
+  mlflow_experiment:
+    experiment_id: '727324825837159999'
+  type: MLFLOW_EXPERIMENT

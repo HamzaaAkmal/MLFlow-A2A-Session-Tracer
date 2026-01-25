@@ -1,0 +1,22 @@
+execution_duration_ms: 2190
+request_preview: '{"user_message": "Analyze the key differences between TensorFlow
+  and PyTorch"}'
+request_time: '2026-01-25T09:18:54.154Z'
+response_preview: '{"turn_number": 2, "session_id": "v3_session_1769332730", "response":
+  "Based on my analysis: {''analysis'': {''confidence'': 0.89, ''key_points'': [''Point
+  1'', ''Point 2'', ''Point 3''], ''summary'': ''Analysis of: Analyze the key differences
+  between TensorFlow and...''}}", "remote_agent_work": {"agent_name": "RemoteSuperagent",
+  "result": {"analysis": {"confidence": 0.89, "key_points": ["Point 1", "Point 2",
+  "Point 3"], "summary": "Analysis of: Analyze the key differences between TensorFlow
+  and..."}}, "total_execution_time_ms": 150, "trace_context_received": {"X-Parent-Span-ID":
+  "72fe0a88d2eb436c", "X-Session-ID": "v3_session_1769332730", "X-Trace-ID": "c69bbe3b70a8a58a334091f71880dbe7",
+  "X-Turn-Number": "2", "traceparent": "00-c69bbe3b70a8a58a334091f71880dbe7-72fe0a88d2eb436c-01"},
+  "work_log": [{"duration_ms": 150, "input": {"content": "Analyze the key differences
+  between TensorFlow and PyTorch"}, "operation": "data_analysis", "output": {"analysis":
+  {"confidence": 0.89, "key_points": ["Point 1", ...'
+state: OK
+trace_id: tr-c69bbe3b70a8a58a334091f71880dbe7
+trace_location:
+  mlflow_experiment:
+    experiment_id: '198185151645223507'
+  type: MLFLOW_EXPERIMENT

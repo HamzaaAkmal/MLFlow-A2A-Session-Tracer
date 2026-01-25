@@ -1,0 +1,10 @@
+execution_duration_ms: 1
+request_preview: '{"user_message": "Thanks, that''s helpful!"}'
+request_time: '2026-01-25T09:12:04.463Z'
+response_preview: '{"response": "I understood your message. How can I help further?"}'
+state: OK
+trace_id: tr-5207d86921d3ad266e37ce5c96cb773b
+trace_location:
+  mlflow_experiment:
+    experiment_id: '214798696405398009'
+  type: MLFLOW_EXPERIMENT

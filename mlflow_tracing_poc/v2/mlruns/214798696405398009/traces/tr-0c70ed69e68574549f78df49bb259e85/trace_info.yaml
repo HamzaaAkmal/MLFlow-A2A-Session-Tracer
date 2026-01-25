@@ -1,0 +1,15 @@
+execution_duration_ms: 369
+request_preview: '{"request": {"message_type": "task_request", "payload": {"task_id":
+  "648a17cf-d81d-4e4a-b1f4-90b4b48f9e8f", "task_type": "analyze", "input_data": {"message":
+  "Now analyze the trends in machine learning"}}}}'
+request_time: '2026-01-25T09:12:04.035Z'
+response_preview: '{"message_type": "task_response", "payload": {"status": "success",
+  "result": {"data": {"summary": "Analysis complete", "insights": ["Insight 1", "Insight
+  2", "Insight 3"], "confidence": 0.9245812250572563}, "message": "Task analyze completed
+  successfully."}}}'
+state: OK
+trace_id: tr-0c70ed69e68574549f78df49bb259e85
+trace_location:
+  mlflow_experiment:
+    experiment_id: '214798696405398009'
+  type: MLFLOW_EXPERIMENT

@@ -1,0 +1,23 @@
+execution_duration_ms: 2398
+request_preview: '{"user_message": "Search for information about Python machine learning
+  libraries"}'
+request_time: '2026-01-25T09:18:51.424Z'
+response_preview: '{"turn_number": 1, "session_id": "v3_session_1769332730", "response":
+  "Based on my analysis: {''knowledge'': {''facts'': [\"Fact about Search for information
+  about Python machine learning libraries: It''s important\", \"Another fact about
+  Search for information about Python machine learning libraries: It''s widely used\"],
+  ''found'': True, ''topic'': ''Search for information about Python machine learning
+  libraries''}, ''search_results'': [{''score'': 0.95, ''title'': ''Result 1 for:
+  Search for information about Python machine learning libraries'', ''url'': ''http://example.com/1''},
+  {''score'': 0.87, ''title'': ''Result 2 for: Search for information about Python
+  machine learning libraries'', ''url'': ''http://example.com/2''}, {''score'': 0.82,
+  ''title'': ''Result 3 for: Search for information about Python machine learning
+  libraries'', ''url'': ''http://example.com/3''}]}", "remote_agent_work": {"agent_name":
+  "RemoteSuperagent", "result": {"knowledge": {"facts": ["Fact about Search for information
+  about Python machine learnin...'
+state: OK
+trace_id: tr-88e9fb190a05ca3d114d1bdc3f6b560c
+trace_location:
+  mlflow_experiment:
+    experiment_id: '198185151645223507'
+  type: MLFLOW_EXPERIMENT

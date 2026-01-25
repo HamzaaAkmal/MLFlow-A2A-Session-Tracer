@@ -1,0 +1,11 @@
+execution_duration_ms: 351
+request_preview: '{"user_message": "Now analyze the trends in AI development for 2024",
+  "turn": 2}'
+request_time: '2026-01-25T09:03:08.412Z'
+response_preview: '{"response": "Analysis complete with 3 insights generated."}'
+state: OK
+trace_id: tr-08d6c191385a61c1de7fa2254a649247
+trace_location:
+  mlflow_experiment:
+    experiment_id: '727324825837159999'
+  type: MLFLOW_EXPERIMENT

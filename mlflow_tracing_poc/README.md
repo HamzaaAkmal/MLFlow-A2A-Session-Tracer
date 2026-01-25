@@ -1,4 +1,6 @@
-# MLflow Multi-Agent Tracing - Proof of Concept
+# MLflow Multi-Agent Tracing — Deliverable (Single Trace)
+
+> Note: The final deliverable is in `single_trace/`. Legacy versions are archived in `archive_legacy_versions/`.
 
 ## Overview
 

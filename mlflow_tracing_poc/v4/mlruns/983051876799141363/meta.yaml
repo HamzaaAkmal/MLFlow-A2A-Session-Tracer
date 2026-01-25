@@ -1,6 +1,0 @@
-artifact_location: file:///C:/Users/Hamza/Desktop/Folks Client/mlflow_tracing_poc/v4/mlruns/983051876799141363
-creation_time: 1769333512698
-experiment_id: '983051876799141363'
-last_update_time: 1769333512698
-lifecycle_stage: active
-name: v4_single_trace_demo

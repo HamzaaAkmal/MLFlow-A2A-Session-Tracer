@@ -30,8 +30,8 @@ from session_trace import (
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Configure MLflow
-mlflow.set_tracking_uri("sqlite:///mlflow_v4.db")
+# Configure MLflow - using file-based storage (mlruns folder)
+mlflow.set_tracking_uri("file:./mlruns")
 mlflow.set_experiment("v4_single_trace_demo")
 
 

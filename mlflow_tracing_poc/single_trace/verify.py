@@ -1,19 +1,8 @@
-"""Verify trace structure from `mlruns/` artifacts.
-
-This script scans the local `mlruns` folder and validates:
-- Single trace exists per session
-- All spans belong to same trace
-- Proper nesting: session -> turn -> delegate -> remote_*
-"""
 import json
 from pathlib import Path
 
 BASE = Path(__file__).parent
 MLRUNS = BASE / "mlruns"
-
-print("\n" + "="*60)
-print("TRACE VERIFICATION (mlruns)")
-print("="*60)
 
 if not MLRUNS.exists():
     print("No mlruns folder found. Run the demo to generate traces.")
@@ -60,7 +49,7 @@ for session_id, traces in traces_by_session.items():
     print(f"  Traces found: {len(traces)}")
 
     if len(traces) != 1:
-        print("  ❌ FAIL: expected 1 trace per session")
+        print("FAIL: expected 1 trace per session")
         continue
 
     trace = traces[0]
@@ -88,19 +77,18 @@ for session_id, traces in traces_by_session.items():
     # Checks
     turn_spans = [s for s in spans if s.get("name", "").startswith("turn_")]
     if not turn_spans:
-        print("  ❌ FAIL: no turn spans found")
+        print("FAIL: no turn spans found")
     else:
         root_id = root_spans[0]["span_id"] if root_spans else None
         if all(t.get("parent_span_id") == root_id for t in turn_spans):
-            print("  ✅ PASS: All turn spans are children of root session span")
+            print("PASS: All turn spans are children of root session span")
         else:
-            print("  ❌ FAIL: Some turn spans are not direct children of root")
+            print("FAIL: Some turn spans are not direct children of root")
 
     remote_spans = [s for s in spans if s.get("name", "").startswith("remote_")]
     if remote_spans:
-        print(f"  ✅ PASS: Remote work logged as spans ({len(remote_spans)})")
+        print(f"PASS: Remote work logged as spans ({len(remote_spans)})")
     else:
-        print("  ⚠️ WARNING: No remote work spans found")
+        print("WARNING: No remote work spans found")
 
-print("\n" + "="*60)
 print("Verification complete.")

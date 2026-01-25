@@ -261,5 +261,91 @@ def demo():
     return len(unique_traces) == 1
 
 
+# --- HTTP Server (for Postman/demo) -------------------------------------
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+
+@app.route("/health", methods=["GET"])
+def health():
+    return jsonify({"status": "healthy", "agent": "SupervisorAgent", "version": "4.0.0"})
+
+
+@app.route("/.well-known/agent.json", methods=["GET"])
+def agent_card():
+    return jsonify({
+        "name": "SupervisorAgent",
+        "description": "Supervisor agent with single-trace multi-turn capability",
+        "version": "4.0.0",
+        "endpoints": {"ask": "/ask", "end_session": "/end_session", "health": "/health"}
+    })
+
+
+@app.route("/ask", methods=["POST"])
+def ask():
+    data = request.json or {}
+    session_id = data.get("session_id") or f"session_{int(time.time())}"
+    question = data.get("question") or data.get("content", "")
+    if not question:
+        return jsonify({"error": "Missing 'question' in request body"}), 400
+
+    result = SupervisorAgent().process_turn(session_id, question)
+
+    return jsonify({
+        "session_id": session_id,
+        "turn_number": result.get("turn_number"),
+        "trace_id": result.get("trace_id"),
+        "response": result.get("response"),
+        "raw": result
+    })
+
+
+@app.route("/end_session", methods=["POST", "GET"])
+def end_session():
+    # Accept session_id from POST body JSON, query string, or X-Session-ID header for resilience
+    data = {}
+    if request.method == "POST":
+        data = request.get_json(silent=True) or {}
+
+    # Try body, then query params, then header
+    session_id = data.get("session_id") or request.args.get("session_id") or request.headers.get("X-Session-ID")
+
+    # Log request info to aid debugging when clients mis-format the URL
+    logger.info(
+        "end_session called: method=%s path=%s args=%s body=%s headers=X-Session-ID:%s",
+        request.method,
+        request.path,
+        dict(request.args),
+        data,
+        request.headers.get("X-Session-ID")
+    )
+
+    if not session_id:
+        return jsonify({"error": "Missing 'session_id' in request body, query string, or X-Session-ID header"}), 400
+
+    SupervisorAgent().end_session(session_id)
+    return jsonify({"status": "ended", "session_id": session_id})
+
+
+def run_server(host: str = "0.0.0.0", port: int = 5000):
+    print("\n" + "="*60)
+    print("SUPERVISOR AGENT SERVER")
+    print("Pattern: Single-Trace multi-turn with HTTP endpoint /ask")
+    print("="*60)
+    print("\nEndpoints:")
+    print("  - GET  /health")
+    print("  - GET  /.well-known/agent.json")
+    print("  - POST /ask         (body: {\"question\": \"...\", \"session_id\": \"optional\"})")
+    print("  - POST /end_session (body: {\"session_id\": \"...\"})")
+    print(f"\nStarting server on http://localhost:{port}")
+    print("="*60 + "\n")
+    app.run(host=host, port=port, debug=False)
+
+
 if __name__ == "__main__":
-    demo()
+    import sys
+    if "--demo" in sys.argv:
+        demo()
+    else:
+        run_server()

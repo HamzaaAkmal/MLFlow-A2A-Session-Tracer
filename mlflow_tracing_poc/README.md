@@ -1,6 +1,6 @@
 # MLflow Multi-Agent Tracing — Deliverable (Single Trace)
 
-> Note: The final deliverable is in `single_trace/`. Legacy versions are archived in `archive_legacy_versions/`.
+> Note: The final deliverable is in `single_trace/`.
 
 ## Overview
 
@@ -34,118 +34,119 @@ This Proof of Concept (PoC) demonstrates a robust MLflow-based tracing solution 
 └──────────────────────────────────────────────────────────────────────────┘
 ```
 
-## Project Structure
+
+## ▶️ How to run the demo 
+
+1. Start remote agent (in `single-trace` folder):
+
+```bash
+python remote_agent.py
+```
+
+2. Run supervisor demo (same `single-trace` folder):
+
+```bash
+python supervisor_agent.py
+```
+
+3. Verify traces (option A - quick script):
+
+```bash
+python verify.py
+```
+
+4. View traces in MLflow UI (from `single-trace` folder):
+
+```bash
+mlflow ui --port 5002
+# then open http://localhost:5002
+```
+
+## ▶️ Demo with Postman ✅
+
+You can demo the supervisor endpoint using Postman (or curl):
+
+1. Start the remote agent:
+
+```bash
+python single_trace/remote_agent.py
+```
+
+2. Start the supervisor server (default mode is HTTP server):
+
+```bash
+python single_trace/supervisor_agent.py
+```
+
+3. In Postman, create a POST request to `http://localhost:5000/ask` with headers:
+
+- `Content-Type: application/json`
+
+Body (raw JSON):
+
+```json
+{
+  "question": "Search for Python machine learning libraries",
+  "session_id": "optional-session-123"
+}
+```
+
+4. The response JSON will include `session_id`, `turn_number`, `trace_id`, and `response`. To end a session you can either POST JSON or use a GET query string. Examples:
+
+POST (body JSON):
+```json
+{ "session_id": "optional-session-123" }
+```
+
+GET with query parameter:
 
 ```
-mlflow_tracing_poc/
-├── README.md                   # This file
-├── requirements.txt            # Python dependencies
-├── config.py                   # Configuration settings
-├── mlflow_context.py           # Core tracing utilities (Challenge 1 & 2)
-├── enhanced_tracing.py         # Enhanced tracing with decorators
-├── a2a_protocol.py             # Agent-to-Agent communication protocol
-├── supervisor_agent.py         # Local Supervisor Agent
-├── remote_superagent.py        # Remote Superagent (Flask server)
-├── demo_multi_turn.py          # Multi-turn conversation demo
-└── run_demo.py                 # Main entry point (runs everything)
+GET http://localhost:5000/end_session?session_id=optional-session-123
 ```
+
+Note: If you see errors like "Missing parameter name" from your client, ensure you use a full URL including the protocol (e.g. `http://localhost:5000/end_session`) and do not feed the full URL into a router path field that expects only a path. If you're using Postman, put the full URL in the request URL field and use the method `POST` or `GET` as shown.
+You can also run the CLI demo (multi-turn scripted demo) with:
+
+```bash
+python single_trace/supervisor_agent.py --demo
+```
+
+> Note: Demo currently writes traces to `./mlruns` (file backend). You can switch to a database by updating `mlflow.set_tracking_uri(...)`.
 
 ---
 
-## Quick Start Guide
+## Verification checks performed
 
-### Prerequisites
+- Single trace exists for the session (`trace_info` / `trace_id`).
+- All spans belong to the same trace.
+- Turn spans are direct children of the session root span.
+- Remote work spans (e.g. `remote_web_search`) are children of `delegate_to_remote`.
 
-- Python 3.9 or higher
-- pip (Python package manager)
-
-### Step 1: Install Dependencies
-
-Open a terminal in the `mlflow_tracing_poc` directory:
-
-```powershell
-cd "c:\Users\Hamza\Desktop\Folks Client\mlflow_tracing_poc"
-pip install -r requirements.txt
-```
-
-### Step 2: Run the Demo (Automated)
-
-The easiest way to run the demo is using the automated script:
-
-```powershell
-python run_demo.py
-```
-
-This will:
-1. Start the Remote Superagent on port 5001
-2. Run a 3-turn conversation demo
-3. Generate MLflow traces
-4. Clean up when done
-
-### Step 3: View Results in MLflow UI
-
-After running the demo, start the MLflow UI:
-
-```powershell
-mlflow ui --port 5000
-```
-
-Open your browser to: **http://localhost:5000**
-
-Navigate to the experiment: **Multi-Agent-Tracing-PoC**
+You can run `verify.py` to reproduce the verification results (script prints a hierarchical tree and pass/fail checks).
 
 ---
 
-## Manual Step-by-Step Guide
+## 🛠 Troubleshooting
 
-For more control, you can run each component separately:
-
-### Terminal 1: Start the Remote Superagent
-
-```powershell
-cd "c:\Users\Hamza\Desktop\Folks Client\mlflow_tracing_poc"
-python remote_superagent.py
-```
-
-You should see:
-```
-INFO - Starting Remote Superagent on 127.0.0.1:5001
- * Running on http://127.0.0.1:5001
-```
-
-### Terminal 2: Run the Demo
-
-```powershell
-cd "c:\Users\Hamza\Desktop\Folks Client\mlflow_tracing_poc"
-python demo_multi_turn.py
-```
-
-### Terminal 3: Start MLflow UI
-
-```powershell
-cd "c:\Users\Hamza\Desktop\Folks Client\mlflow_tracing_poc"
-mlflow ui --port 5000
-```
+- No traces in `mlruns/`? Check `mlflow.set_tracking_uri(...)` — if it points to `sqlite:///...` traces are stored in the DB instead.
+- Remote agent debug: Hit `GET /health` on port `5001` to ensure remote agent is up.
+- If you see multiple traces per session, ensure the session root span remains open across turns and that you use `parent_span=<LiveSpan>` when creating turn spans.
 
 ---
 
-## Expected Output
+## Tips & Next Steps
 
-### Console Output
+- Consider exporting traces to a central tracing system for long-term storage and searchability.
+- If you want remote agents to own their own spans (instead of supervisor logging them), implement a shared backend or use `TracingClient.log_spans()` with properly constructed OTel spans; this is more complex but possible.
+- Add unit tests for `verify.py` checks.
 
-The demo will produce output like:
+---
 
-```
-======================================================================
-  MLflow Multi-Agent Tracing Demo
-======================================================================
+## References
 
-This demo will simulate a 3-turn conversation to demonstrate:
-  1. Single trace for entire multi-turn conversation
-  2. Nested spans from Remote Superagent
+- MLflow tracing: `start_span_no_context()` and `LiveSpan` APIs
+- W3C Trace Context (`traceparent`) format used for propagation
 
-======================================================================
-  Turn 1: Search request - will be delegated to Remote Superagent
-======================================================================
+---
 
-User: Can you search for information about machine learning frameworks?
+If you want, I can add this file to the project root or update existing README files to link to it. ✅

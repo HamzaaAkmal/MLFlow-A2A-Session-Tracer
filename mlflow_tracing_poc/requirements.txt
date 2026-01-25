@@ -1,23 +1,6 @@
-# MLflow Tracing PoC - Requirements
-# ==================================
-
-# Core MLflow library
 mlflow>=2.10.0
-
-# Web framework for remote agent
 flask>=3.0.0
-
-# HTTP client for A2A communication
 requests>=2.31.0
-
-# ASGI server for production (optional)
 gunicorn>=21.0.0
-
-# For async support (optional)
 aiohttp>=3.9.0
 
-# UUID support (built-in, listed for clarity)
-# uuid - built into Python
-
-# Threading support (built-in)
-# threading - built into Python
